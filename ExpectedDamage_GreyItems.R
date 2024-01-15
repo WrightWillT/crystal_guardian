@@ -40,29 +40,29 @@ tower_hp_pct <- TOWER_HP / TOWER_MAX_HP
 missing_health_multiplier <- (1 - tower_hp_pct) * 10 # 10 to indicate number of 10% chunks missing
 
 
-flat_damage <- function(item1_damage, item2_damage, item3_damage, item4_damage, item5_damage, item6_damage, item7_damage) {
-  damage_boost <- item1_damage + item2_damage + item3_damage + item4_damage + item5_damage + item6_damage + item7_damage
+flat_damage <- function(item1_damage, item2_damage, item3_damage, item4_damage, item5_damage, item6_damage, item7_damage, item8_damage, item9_damage) {
+  damage_boost <- item1_damage + item2_damage + item3_damage + item4_damage + item5_damage + item6_damage + item7_damage + item8_damage + item9_damage
   flat_damage_output <- DAMAGE_DEFAULT * (1 + damage_boost)
   return(flat_damage_output)
 }
 
 
-crit_chance <- function(item1_crit_chance, item2_crit_chance, item3_crit_chance, item4_crit_chance, item5_crit_chance, item6_crit_chance, item7_crit_chance) {
-  crit_chance_bonus <- item1_crit_chance + item2_crit_chance + item3_crit_chance + item4_crit_chance + item5_crit_chance + item6_crit_chance + item7_crit_chance
+crit_chance <- function(item1_crit_chance, item2_crit_chance, item3_crit_chance, item4_crit_chance, item5_crit_chance, item6_crit_chance, item7_crit_chance, item8_crit_chance, item9_crit_chance) {
+  crit_chance_bonus <- item1_crit_chance + item2_crit_chance + item3_crit_chance + item4_crit_chance + item5_crit_chance + item6_crit_chance + item7_crit_chance + item8_crit_chance + item9_crit_chance
   crit_chance_output <- CRIT_CHANCE_DEFAULT + crit_chance_bonus
   return(crit_chance_output)
 }
 
 
-crit_damage <- function(item1_crit_damage, item2_crit_damage, item3_crit_damage, item4_crit_damage, item5_crit_damage, item6_crit_damage, item7_crit_damage) {
-  crit_damage_bonus <- item1_crit_damage + item2_crit_damage + item3_crit_damage + item4_crit_damage + item5_crit_damage + item6_crit_damage + item7_crit_damage
+crit_damage <- function(item1_crit_damage, item2_crit_damage, item3_crit_damage, item4_crit_damage, item5_crit_damage, item6_crit_damage, item7_crit_damage, item8_crit_damage, item9_crit_damage) {
+  crit_damage_bonus <- item1_crit_damage + item2_crit_damage + item3_crit_damage + item4_crit_damage + item5_crit_damage + item6_crit_damage + item7_crit_damage + item8_crit_damage + item9_crit_damage
   crit_damage_output <- CRIT_DAMAGE_DEFAULT + crit_damage_bonus * total_crit_boost
   return(crit_damage_output)
 }
 
 
-attack_speed <- function(item1_attack_speed, item2_attack_speed, item3_attack_speed, item4_attack_speed, item5_attack_speed, item6_attack_speed, item7_attack_speed) {
-  attack_speed_bonus <- item1_attack_speed + item2_attack_speed + item3_attack_speed + item4_attack_speed + item5_attack_speed + item6_attack_speed + item7_attack_speed
+attack_speed <- function(item1_attack_speed, item2_attack_speed, item3_attack_speed, item4_attack_speed, item5_attack_speed, item6_attack_speed, item7_attack_speed, item8_attack_speed, item9_attack_speed) {
+  attack_speed_bonus <- item1_attack_speed + item2_attack_speed + item3_attack_speed + item4_attack_speed + item5_attack_speed + item6_attack_speed + item7_attack_speed + item8_attack_speed + item9_attack_speed
   attack_speed_output <- ATTACK_SPEED_DEFAULT * (1 + attack_speed_bonus) 
   return(attack_speed_output)
 }
@@ -77,7 +77,7 @@ expected_damage <- function(flat_damage, crit_chance, crit_damage, attack_speed)
 }
 
 
-comb_item_expected_damage <- function(item1, item2, item3, item4, item5, item6, item7) {
+comb_item_expected_damage <- function(item1, item2, item3, item4, item5, item6, item7, item8 = NULL, item9 = NULL) {
   # Convert string inputs to objects
   item1 <- get(item1)
   item2 <- get(item2)
@@ -86,11 +86,13 @@ comb_item_expected_damage <- function(item1, item2, item3, item4, item5, item6, 
   item5 <- get(item5)
   item6 <- get(item6)
   item7 <- get(item7)
+  item8 <- if (is.null(item8)) get("null_item") else get(item8) # optional 8th and 9th for hardmode
+  item9 <- if (is.null(item9)) get("null_item") else get(item9)
   
-  flat_damage <- flat_damage(item1$damage, item2$damage, item3$damage, item4$damage, item5$damage, item6$damage, item7$damage)
-  crit_chance <- crit_chance(item1$crit_chance, item2$crit_chance, item3$crit_chance, item4$crit_chance, item5$crit_chance, item6$crit_chance, item7$crit_chance)
-  crit_damage <- crit_damage(item1$crit_damage, item2$crit_damage, item3$crit_damage, item4$crit_damage, item5$crit_damage, item6$crit_damage, item7$crit_damage)
-  attack_speed <- attack_speed(item1$attack_speed, item2$attack_speed, item3$attack_speed, item4$attack_speed, item5$attack_speed, item6$attack_speed, item7$attack_speed)
+  flat_damage <- flat_damage(item1$damage, item2$damage, item3$damage, item4$damage, item5$damage, item6$damage, item7$damage, item8$damage, item9$damage)
+  crit_chance <- crit_chance(item1$crit_chance, item2$crit_chance, item3$crit_chance, item4$crit_chance, item5$crit_chance, item6$crit_chance, item7$crit_chance, item8$crit_chance, item9$crit_chance)
+  crit_damage <- crit_damage(item1$crit_damage, item2$crit_damage, item3$crit_damage, item4$crit_damage, item5$crit_damage, item6$crit_damage, item7$crit_damage, item8$crit_damage, item9$crit_damage)
+  attack_speed <- attack_speed(item1$attack_speed, item2$attack_speed, item3$attack_speed, item4$attack_speed, item5$attack_speed, item6$attack_speed, item7$attack_speed, item8$attack_speed, item9$attack_speed)
   
   expected_damage <- expected_damage(flat_damage, crit_chance, crit_damage, attack_speed)
   return(expected_damage)
@@ -128,13 +130,13 @@ mortal_fury <- item(attack_speed = 0.075 * missing_health_multiplier)
 # CALCULATIONS
 ############################################################################################################################################
 
-#### Create a table of all possible combinations ####
+#### Create a table of all possible combinations for 7 slots (normal difficulty) ####
 
 # Define the items
 items <- c("chili_power", "sharp_axe", "critical_damage_mace", "lucky_crit", "lethal_desperation", "mortal_fury")
 
 # Generate all combinations with replacement
-all_combinations <- expand.grid(
+all_combinations_7 <- expand.grid(
   slot1 = items, 
   slot2 = items, 
   slot3 = items, 
@@ -145,35 +147,82 @@ all_combinations <- expand.grid(
 )
 
 # Sort each row and remove duplicates
-unique_combinations <- unique(t(apply(all_combinations, 1, sort)))
+unique_combinations_7 <- unique(t(apply(all_combinations_7, 1, sort)))
 
 # Convert back to a data frame
-combos_df <- as.data.frame(unique_combinations)
+combos_df_7 <- as.data.frame(unique_combinations_7)
 
-names(combos_df) <- c("slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7")
+names(combos_df_7) <- c("slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7")
 
 # Calculated expected damage and sort on that
-combos_df <- combos_df %>%
+combos_df_7 <- combos_df %>%
   rowwise() %>%
   mutate(expected_damage = comb_item_expected_damage(slot1, slot2, slot3, slot4, slot5, slot6, slot7)) %>%
   arrange(desc(expected_damage))
+
+
+# Investigating where there are exactly 1 crit mace
+combos_df_7$critical_damage_mace_count = rowSums(combos_df_7[, c("slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7")] == "critical_damage_mace")
+
+
+#### Create a table of all possible combinations for 9 slots (hard mode difficulty) ####
+
+# Generate all combinations with replacement
+all_combinations_9 <- expand.grid(
+  slot1 = items, 
+  slot2 = items, 
+  slot3 = items, 
+  slot4 = items, 
+  slot5 = items, 
+  slot6 = items, 
+  slot7 = items,
+  slot8 = items,
+  slot9 = items
+)
+
+# Sort each row and remove duplicates
+unique_combinations_9 <- unique(t(apply(all_combinations_9, 1, sort)))
+
+# Convert back to a data frame
+combos_df_9 <- as.data.frame(unique_combinations_9)
+
+names(combos_df_9) <- c("slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7", "slot8", "slot9")
+
+# Calculated expected damage and sort on that
+combos_df_9 <- combos_df_9 %>%
+  rowwise() %>%
+  mutate(expected_damage = comb_item_expected_damage(slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8, slot9)) %>%
+  arrange(desc(expected_damage))
+
+
+# Investigating where there are exactly 1 crit mace
+combos_df_9$critical_damage_mace_count = rowSums(combos_df_9[, c("slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7", "slot8", "slot9")] == "critical_damage_mace")
 
 
 ############################################################################################################################################
 # VISUALIZATION
 ############################################################################################################################################
 
-# Create a histogram of expected_damage 
-ggplot(combos_df, aes(x = expected_damage)) +
+# Create a histogram of expected_damage for normal mode
+ggplot(combos_df_7, aes(x = expected_damage)) +
   geom_histogram(binwidth = 100, # You can adjust the binwidth as needed
                  fill = "#21918c", 
                  color = "black") +
   theme_minimal() +
-  labs(title = "Distribution of Expected Damage for All Combinations of Grey Items",
+  labs(title = "Distribution of Expected Damage for All Combinations of Grey Items in Normal Mode",
        x = "Expected Damage",
        y = "Frequency") +
   theme_bw()
 
 
-
+# Create a histogram of expected_damage for hard mode
+ggplot(combos_df_9, aes(x = expected_damage)) +
+  geom_histogram(binwidth = 100, # You can adjust the binwidth as needed
+                 fill = "#21918c", 
+                 color = "black") +
+  theme_minimal() +
+  labs(title = "Distribution of Expected Damage for All Combinations of Grey Items in Hard Mode",
+       x = "Expected Damage",
+       y = "Frequency") +
+  theme_bw()
 
